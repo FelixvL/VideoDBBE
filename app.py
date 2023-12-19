@@ -13,5 +13,9 @@ def alleacteurs():
 def acteuropnaam(naamdeel):
     return jsonify(acteursfile.geefActeursOpNaam(naamdeel))
 
+@app.route('/zoekopallekenmerken/<naamdeel>/<d>/<k>/<r>/<g>')
+def acteuropallekenmerken(naamdeel,d,k,r,g):
+    return jsonify(acteursfile.geefActeursOpAlleKenmerken(naamdeel,d,k,r,g))
+
 if __name__ == '__main__':
     app.run(debug=True)
