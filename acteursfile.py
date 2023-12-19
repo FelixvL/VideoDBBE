@@ -22,4 +22,14 @@ def geefAlleActeurs():
     closeConnectionAndCursor(c, cr)
 
     return result
+
+def geefActeursOpNaam(naamdeel):
+    c, cr = geefVerbinding() # dictionary=True zorgt ervoor dat de resultaten als dict worden geretourneerd
+
+    cr.execute("SELECT * FROM acteurs WHERE Voornaam like '%"+naamdeel+"%' OR Achternaam like '%"+naamdeel+"%'")
+    result = cr.fetchall()
+
+    closeConnectionAndCursor(c, cr)
+
+    return result
 #print(geefAlleActeurs())
