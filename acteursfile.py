@@ -23,10 +23,54 @@ def geefAlleActeurs():
 
     return result
 
+def kentoe(cat,waarde,fid):
+    c, cr = geefVerbinding() # dictionary=True zorgt ervoor dat de resultaten als dict worden geretourneerd
+
+    print("UPDATE acteurs SET "+letternaarcategorei(cat)+" = "+waarde+" WHERE id = "+fid+"")
+
+    update_statement = "UPDATE acteurs SET "+letternaarcategorei(cat)+" = %s WHERE id = %s"
+
+    values = (waarde, fid)
+
+    t = cr.execute(update_statement, values)
+    print(t)
+    c.commit()
+    closeConnectionAndCursor(c, cr)
+
+    return '{"hh":"hh"}'
+def letternaarcategorei(letter):
+    categorie = ["Grootte","Rating","Decennia","Kleur"]
+    if letter == "g":
+        return categorie[0]
+    if letter == "r":
+        return categorie[1]
+    if letter == "d":
+        return categorie[2]
+    if letter == "k":
+        return categorie[3]
+
 def geefActeursOpNaam(naamdeel):
     c, cr = geefVerbinding() # dictionary=True zorgt ervoor dat de resultaten als dict worden geretourneerd
 
-    cr.execute("SELECT * FROM acteurs WHERE Voornaam like '%"+naamdeel+"%' OR Achternaam like '%"+naamdeel+"%'")
+    cr.execute("SELECT * FROM acteurs WHERE (Voornaam like '%"+n+"%' OR Achternaam like '%"+n+"%' OR AfbeeldingURL like '%"+n+"%')")
+    result = cr.fetchall()
+
+    closeConnectionAndCursor(c, cr)
+
+    return result
+
+def zoeknullopcategorie(cat):
+    c, cr = geefVerbinding() # dictionary=True zorgt ervoor dat de resultaten als dict worden geretourneerd
+    kolom = ""
+    if(cat == "g"):
+        kolom = "Grootte"
+    if(cat == "k"):
+        kolom = "Kleur"
+    if(cat == "r"):
+        kolom = "Rating"
+    if(cat == "d"):
+        kolom = "Decennia"
+    cr.execute("SELECT * FROM acteurs WHERE "+kolom+" is null")
     result = cr.fetchall()
 
     closeConnectionAndCursor(c, cr)
@@ -54,7 +98,7 @@ def makeWhereClause(n,d,k,r,g):
     else:
         returnstring += " WHERE"
         if n != "all":
-            returnstring +=  " (Voornaam like '%"+n+"%' OR Achternaam like '%"+n+"%')"
+            returnstring +=  " (Voornaam like '%"+n+"%' OR Achternaam like '%"+n+"%' OR AfbeeldingURL like '%"+n+"%')"
         else:
             returnstring += " true"
         if g != "all":

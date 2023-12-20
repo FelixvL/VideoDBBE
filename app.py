@@ -17,5 +17,13 @@ def acteuropnaam(naamdeel):
 def acteuropallekenmerken(naamdeel,d,k,r,g):
     return jsonify(acteursfile.geefActeursOpAlleKenmerken(naamdeel,d,k,r,g))
 
+@app.route('/zoeknullopcategorie/<c>')
+def zoeknullopcategorie(c):
+    return jsonify(acteursfile.zoeknullopcategorie(c))
+
+@app.route('/kentoe/<c>/<w>/<i>')
+def kentoe(c,w,i):
+    return jsonify(acteursfile.kentoe(c,w,i))
+
 if __name__ == '__main__':
     app.run(debug=True)
